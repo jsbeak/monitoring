@@ -1,0 +1,53 @@
+{% load static %}
+
+<html>
+    <head>
+        <title>JW 관제 시스템 메인</title>
+           
+        <script type="text/javascript" src="{% static 'js/jquery-2.2.4.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/jui/jui-core.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/jui/jui-ui.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/jui/jui-grid.min.js' %}"></script>
+
+        <!-- Basic style components -->
+        <link rel="stylesheet" href="{% static 'css/jui/jui-ui.min.classic.css' %}">     
+        
+
+        <!-- Grid style components -->
+        <link rel="stylesheet" href="{% static 'css/jui/jui-grid.classic.css' %}">      
+        <link rel="stylesheet" href="{% static 'css/basic.css' %}"> 
+        
+    </head>
+    <body class="jui">
+        <h1>프로젝트 정보 {{ main }} </h1>
+
+
+        <table class="table classic hover">
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>프로젝트 아이디</th>
+                    <th>프로젝트 명</th>
+                    <th>활성화 여부</th>
+                    <th>대표 URL</th>
+                    <th>수집 URL</th>
+                    <th>등록일</th>
+                </tr>
+            </thead>
+
+            {% for project in projects %}
+            <tr>
+                <td>{{ project.pro_no}}</td>
+                <td>{{ project.pro_client_id}}</td>
+                <td>{{ project.pro_client_nm}}</td>
+                <td>{{ project.pro_active_yn}}</td>
+                <td>{{ project.pro_url}}</td>
+                <td>{{ project.pro_craw_url}}</td>
+                <td>{{ project.pro_create_dt}}</td>
+
+            </tr>
+            {% endfor %}
+
+        </table>
+    </body>
+</html>
