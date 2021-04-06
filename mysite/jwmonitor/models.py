@@ -59,3 +59,21 @@ class CpuInfo( models.Model ):
     cpu_usage = models.IntegerField(default=0)
     cpu_idle  = models.IntegerField(default=0)
     cpu_create_dt = models.DateTimeField(default=timezone.now)
+
+
+# Memory 정보
+class MemoryInfo( models.Model):
+    memory_no = models.AutoField(primary_key=True)
+    memory_server_no = models.ForeignKey("ServerInfo" , db_column="memory_server_no", related_name="memory_server_no" , on_delete=models.CASCADE , null=True )
+    memory_usage  = models.IntegerField(default=0)
+    memory_idle   = models.IntegerField(default=0)
+    memory_create_dt  = models.DateTimeField(default=timezone.now)
+
+
+# HDD 정보
+class HddInfo( models.Model ):
+    hdd_no = models.AutoField(primary_key=True)
+    hdd_server_no = models.ForeignKey("ServerInfo" , db_column="hdd_server_no", related_name="hdd_server_no" , on_delete=models.CASCADE , null=True )
+    hdd_usage = models.IntegerField(default=0)
+    hdd_idle  = models.IntegerField(default=0)
+    hdd_create_dt = models.DateTimeField(default=timezone.now)

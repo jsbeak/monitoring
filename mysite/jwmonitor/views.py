@@ -9,6 +9,8 @@ from django.db import transaction
 from .models import ProjectInfo
 from .models import ServerInfo
 from .models import CpuInfo
+from .models import MemoryInfo
+from .models import HddInfo
 
 # Create your views here.
 
@@ -37,7 +39,10 @@ def api(reqeust):
 @csrf_exempt
 def dataInsert(request):
 
+
+    ####################################
     # 서버 정보  
+    ####################################
     server_os = request.POST['server.os']
     server_was          = request.POST['server.was']
     server_was_path     = request.POST['server.was.path']
@@ -50,15 +55,6 @@ def dataInsert(request):
     server_db_type      = request.POST['server.db.type']    
 
 
-
-    # CPU 정보
-    #cpu_server_no 
-    cpu_usage = request.POST['cpu.usage']
-    cpu_idle  = request.POST['cpu.idle']
-
-
-    # ServerInfo Data Insert 
-    
     # ServerInfo 객체 생성
     serverInfo = ServerInfo( 
         server_os=server_os,
@@ -75,22 +71,55 @@ def dataInsert(request):
     )
 
 
+    ####################################
+    # CPU 정보
+    ####################################
+    cpu_usage = request.POST['cpu.usage']
+    cpu_idle  = request.POST['cpu.idle']
+
     # CPU 객체 생성
     cpuInfo = CpuInfo(
         cpu_usage = cpu_usage,
         cpu_idle  = cpu_idle
     )
 
+    ####################################
+    # 메모리 정보
+    ####################################
+    memory_usage = request.POST['memory.usage']
+    memory_idle  = request.POST['memory.idle']
+    
+    memoryInfo = MemoryInfo(
+        memory_usage    =   memory_usage,
+        memory_idle     =   memory_idle
+    )
+
+
+    ####################################
+    # 하드디스크 정보
+    ####################################
+    hdd_usage = request.POST['hdd.usage']
+    hdd_idle  = request.POST['hdd.idle']
+    
+    hddInfo = HddInfo(
+        hdd_usage   =   hdd_usage,
+        hdd_idle    =   hdd_idle
+    )
+
+
+
     if server_pro_no is None:
         return
     
     # 트렌잭션
     with transaction.atomic(): 
+        
+        ####################################
+        # 서버정보 등록
+        ####################################
         try:
             
             serverObj = ServerInfo.objects.get(server_pro_no=server_pro_no)
-
-            print(serverObj )    
 
             serverObj.server_os=server_os
             serverObj.server_was=server_was
@@ -105,23 +134,65 @@ def dataInsert(request):
 
             serverObj.save()
 
-                
-            cpuInfo.cpu_server_no = ServerInfo.objects.get(server_no=serverObj.server_no)
+            ## -------------------------------------    
+            ## 참조테이블 FK 정보     
+            ## -------------------------------------
+            cpuInfo.cpu_server_no       = ServerInfo.objects.get(server_no=serverObj.server_no)
+            memoryInfo.memory_server_no = ServerInfo.objects.get(server_no=serverObj.server_no)
+            hddInfo.hdd_server_no       = ServerInfo.objects.get(server_no=serverObj.server_no)
 
         except ServerInfo.DoesNotExist: # 등록된 정보가 존재하지 않는 경우
-            serverInfo.save()
-            cpuInfo.cpu_server_no = ServerInfo.objects.get(server_no=serverInfo.server_no)
-            
 
-    with transaction.atomic():
+            serverInfo.save()
+            
+            ## -------------------------------------    
+            ## 참조테이블 FK 정보     
+            ## -------------------------------------
+            cpuInfo.cpu_server_no       = ServerInfo.objects.get(server_no=serverInfo.server_no)
+            memoryInfo.memory_server_no = ServerInfo.objects.get(server_no=serverInfo.server_no)
+            hddInfo.hdd_server_no       = ServerInfo.objects.get(server_no=serverInfo.server_no)
+
+        ####################################
+        # CPU 정보 등록
+        ####################################
         try:
             
+            if cpuInfo.cpu_server_no is None:
+                return
+
+
             cpuInfo.save()
 
         except:
-            print("Cpu Insert Error !!")
+            print("Cpu Info Insert Error !!")
 
-            
+
+        ####################################
+        # 메모리 정보 등록
+        ####################################
+        try:
+            if memoryInfo.memory_server_no is None:
+                return    
+
+            memoryInfo.save()
+                
+        except:        
+            print("Memory Info Insert Error !!")
+
+
+        
+        ####################################
+        # HDD 정보 등록
+        ####################################
+        try:
+
+            if hddInfo.hdd_server_no is None:
+                return
+
+            hddInfo.save()
+                
+        except:        
+            print("HDD Info Insert Error !!")        
 
 
     return HttpResponse(True)
