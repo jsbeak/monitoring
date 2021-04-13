@@ -4,13 +4,19 @@ from django.core import serializers
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
-
+from django.http import JsonResponse
+from django.conf import settings
 
 from .models import ProjectInfo
 from .models import ServerInfo
 from .models import CpuInfo
 from .models import MemoryInfo
 from .models import HddInfo
+from .models import Config
+import json
+
+
+from PIL import Image
 
 # Create your views here.
 
@@ -19,23 +25,71 @@ from .models import HddInfo
 # jwmonitor/main.html 템플릿을 보여준다.
 def main(reqeust):
     #쿼리셋
-    projects = ProjectInfo.objects.order_by('pro_no')
-    return render(reqeust, 'jwmonitor/main.html' ,{'projects' : projects})
+    projects = ProjectInfo.objects.filter(pro_active_yn='Y').order_by('pro_no')
+    
+    return render(reqeust, 'jwmonitor/main.html' ,{'projects' : projects })
 
+# 테스트용 
+def api_test(reqeust):
 
+    projects = serializers.serialize('json' ,  ProjectInfo.objects.filter(pro_active_yn='Y').order_by('pro_no') )
+
+    
+    config = serializers.serialize('json' , Config.objects.filter(con_id='craw.engine.cycle.time') )
+    
+    ## 아래 참고해서 또 해보자.......
+    #### http://oniondev.egloos.com/9884186
+
+    ret = dict()
+
+    ret['projects'] =  projects 
+    ret['config']   =  config 
+
+    return JsonResponse(ret, safe=False)
+
+######################################################
 # 크롤링 agent 에서 크롤링할 프로젝트 목록 정보 요청
+######################################################
 def api(reqeust):
-    # 쿼리셋 to json 
-    projects = ProjectInfo.objects.order_by('pro_no')
-    #projects = ProjectInfo.objects.all()
-    projects_json = serializers.serialize('json', projects)
-    #return render(reqeust, 'jwmonitor/api.html' ,{'projects' : projects})
-    return HttpResponse(projects_json, content_type="application/json")
+    
+    config_json   = serializers.serialize('json', Config.objects.filter(con_id='craw.engine.cycle.time') ) 
+    projects_json = serializers.serialize('json', ProjectInfo.objects.filter(pro_active_yn='Y').order_by('pro_no') )
 
+    result = {
+       'projects' : projects_json,
+       'config'   : config_json
+    }
+
+    #JSON 인코딩
+    result_json = json.dumps(result)
+
+    #print( result )
+    
+
+    return HttpResponse( result_json , content_type="application/json")
+
+
+######################################################
+# 도메인 라이센스 검사 
+######################################################
+def jiniImg(request):
+
+    # django 1px 투명 이미지 response
+    #https://uiandwe.tistory.com/1051
+    img = Image.new('RGBA', (1, 1), (0, 0, 0, 1))
+
+    response = HttpResponse(content_type="image/png")
+
+    img.save(response, "png")
+
+    return response
+
+    
+    
+######################################################
 #CSRF_TOKEN 비활성화
 # 크롤링 agent 에서 보낸 정보를 DB 에 insert / update 
-# 대상 테이블 : ServerInfo	
-# update_or_create 검색 후 사용 
+######################################################
 @csrf_exempt
 def dataInsert(request):
 

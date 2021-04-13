@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+import random
 # Create your models here.
 
 
@@ -29,7 +30,7 @@ class ProjectInfo( models.Model):
     pro_url       = models.CharField(max_length=250 , null=True , blank=True )
     pro_craw_url  = models.CharField(max_length=250 , null=True , blank=True )
     pro_create_dt = models.DateTimeField(default=timezone.now)
-
+    pro_domain    = models.TextField(null=True, blank=True)
 
 
 # 서버정보
@@ -77,3 +78,30 @@ class HddInfo( models.Model ):
     hdd_usage = models.IntegerField(default=0)
     hdd_idle  = models.IntegerField(default=0)
     hdd_create_dt = models.DateTimeField(default=timezone.now)
+
+
+
+# 도메인 라이센스 체크
+class DomainLicense( models.Model ):
+    dl_no       = models.AutoField(primary_key=True)
+    dl_referer  = models.CharField(max_length=255, null=False , blank=False)
+    dl_ip       = models.CharField(max_length=255, null=True , blank=True)    
+    dl_confirm   = models.CharField(max_length=1, null=False,  blank=False, default='N')     
+    dl_create_dt = models.DateTimeField(default=timezone.now)
+
+
+
+# 환경설정
+
+def random_string():
+    return str(random.randint(10000, 99999))
+
+def config_default():
+    return {}
+
+class Config( models.Model ):
+    con_no   = models.AutoField(primary_key=True)
+    con_id   = models.CharField(max_length=120 , null=False , blank=False, default='')
+    con_desc = models.CharField(max_length=255 , null=True , blank=True)
+    con_data = models.CharField(max_length=255 , null=False , blank=False , default='')
+    con_update_dt = models.DateTimeField(default=timezone.now)
