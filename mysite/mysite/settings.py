@@ -123,3 +123,15 @@ USE_TZ = True
 STATIC_URL = '/static/'
 # 정적파일 경로를 추가
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+
+##########################
+# django-redis 관련 설정
+##########################
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://{URL}:6379',
+    }
+}

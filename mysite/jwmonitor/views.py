@@ -13,12 +13,16 @@ from .models import CpuInfo
 from .models import MemoryInfo
 from .models import HddInfo
 from .models import Config
+
+from django.core.cache import cache 
+
+from PIL import Image
 import json
 
 
-from PIL import Image
-
 # Create your views here.
+
+
 
 
 # 요청(request) 을 넘겨받아 render 메서드를 호출하고 
@@ -79,12 +83,45 @@ def jiniImg(request):
     img = Image.new('RGBA', (1, 1), (0, 0, 0, 1))
 
     response = HttpResponse(content_type="image/png")
-
     img.save(response, "png")
 
+    #-------------------------------------------
+    # 요청 referer 검사
+    #-------------------------------------------
+
+    user_agent = request.META.get('HTTP_USER_AGENT')
+    referer = request.META.get('HTTP_REFERER', '')
+    client_ip =  get_client_ip(request) 
+    
+    print( user_agent )
+    print( client_ip )
+    print( referer )
+
+    # Django & django-redis ( cache 기능 )
+    # https://velog.io/@jiffydev/Django-16.-Django-django-redis
+    # https://lee-seul.github.io/django/2019/05/02/django-cache-framework.html
+
+    # Ex ) 
+    # def get_post_count():
+    #     cache_key = 'my_blog_post_count'
+    #     count = cache.get(cache_key, None)
+    #     if not count:
+    #         count = self._get_post_count()
+    #         cache.set(cache_key, count, 60 * 60)
+    #     return count
+
+    porjectInfoList = ProjectInfo.objects.filter(pro_active_yn='Y', pro_domain__isnull=False).only('pro_domain')
+
+    for projectInfo in porjectInfoList:
+        print( projectInfo.pro_domain )    
+                 
+    
+    # http://localhost:8080//_custom/fox/_common/board/index/1055.do
     return response
 
-    
+
+
+
     
 ######################################################
 #CSRF_TOKEN 비활성화
@@ -250,3 +287,13 @@ def dataInsert(request):
 
 
     return HttpResponse(True)
+
+
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
