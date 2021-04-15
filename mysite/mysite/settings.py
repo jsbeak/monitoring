@@ -126,12 +126,22 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 ##########################
-# django-redis 관련 설정
+# 로컬 캐시 설정
+# https://django-document-korean.readthedocs.io/ko/django_15_i18n/topics/cache.html
 ##########################
 
 CACHES = {
     'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://{URL}:6379',
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake'
     }
 }
+
+# 개발용 더미 캐시 설정
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
+#     }
+# }
+
+PROJECT_DOMAIN_CACHE_KEY = 'project_info_domain_list'

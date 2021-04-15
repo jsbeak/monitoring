@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
+from django.core.cache import cache
 import random
 # Create your models here.
 
@@ -31,6 +33,19 @@ class ProjectInfo( models.Model):
     pro_craw_url  = models.CharField(max_length=250 , null=True , blank=True )
     pro_create_dt = models.DateTimeField(default=timezone.now)
     pro_domain    = models.TextField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        cache.delete(settings.PROJECT_DOMAIN_CACHE_KEY)  
+        super().save(*args, **kwargs)  # 실제 save() 를 호출 
+        
+    def update(self, *args, **kwargs):
+        cache.delete(settings.PROJECT_DOMAIN_CACHE_KEY)  
+        super().update(*args, **kwargs)  
+        
+    def delete(self, *args, **kwargs):
+        cache.delete(settings.PROJECT_DOMAIN_CACHE_KEY)  
+        super().delete(*args, **kwargs)
+       
 
 
 # 서버정보

@@ -14,7 +14,8 @@ from .models import MemoryInfo
 from .models import HddInfo
 from .models import Config
 
-from django.core.cache import cache 
+ 
+from django.core.cache import cache
 
 from PIL import Image
 import json
@@ -97,23 +98,29 @@ def jiniImg(request):
     print( client_ip )
     print( referer )
 
-    # Django & django-redis ( cache 기능 )
-    # https://velog.io/@jiffydev/Django-16.-Django-django-redis
-    # https://lee-seul.github.io/django/2019/05/02/django-cache-framework.html
+    # Cache 기능
+    # https://somnusnote.tistory.com/entry/Django%EC%9D%98-cache-%EC%82%AC%EC%9A%A9
 
-    # Ex ) 
-    # def get_post_count():
-    #     cache_key = 'my_blog_post_count'
-    #     count = cache.get(cache_key, None)
-    #     if not count:
-    #         count = self._get_post_count()
-    #         cache.set(cache_key, count, 60 * 60)
-    #     return count
+    #porjectInfoList = ProjectInfo.objects.filter(pro_active_yn='Y', pro_domain__isnull=False).only('pro_domain')
 
-    porjectInfoList = ProjectInfo.objects.filter(pro_active_yn='Y', pro_domain__isnull=False).only('pro_domain')
+    domain_cache_key = settings.PROJECT_DOMAIN_CACHE_KEY  #'project_info_domain_list'
+    
+    if not cache.get(domain_cache_key):
+        domain_list = []
 
-    for projectInfo in porjectInfoList:
-        print( projectInfo.pro_domain )    
+        porjectInfoList = ProjectInfo.objects.filter(pro_active_yn='Y', pro_domain__isnull=False).only('pro_domain')
+        
+        for projectInfo in porjectInfoList:
+            #domain_list.append( projectInfo.pro_domain.split(',') )
+            for domain in projectInfo.pro_domain.split(','):
+                domain_list.append(domain)
+                print('캐시에 담기')
+
+            
+        cache.set(domain_cache_key, domain_list)
+        print( domain_list )
+    
+    
                  
     
     # http://localhost:8080//_custom/fox/_common/board/index/1055.do
