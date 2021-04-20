@@ -97,14 +97,15 @@ class HddInfo( models.Model ):
 
 
 # 도메인 라이센스 체크
-class DomainLicense( models.Model ):
+class DomainInfo( models.Model ):
     dl_no       = models.AutoField(primary_key=True)
     dl_referer  = models.CharField(max_length=255, null=False , blank=False)
     dl_agent    = models.CharField(max_length=255, null=True , blank=True)    
+    dl_host     = models.CharField(max_length=255, null=False , blank=False , default='NONE' )
     dl_ip       = models.CharField(max_length=255, null=True , blank=True)    
     dl_confirm   = models.CharField(max_length=1, null=False,  blank=False, default='N')     
     dl_create_dt = models.DateTimeField(default=timezone.now)
-
+    
 
 
 # 환경설정

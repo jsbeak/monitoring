@@ -145,3 +145,4 @@ CACHES = {
 # }
 
 PROJECT_DOMAIN_CACHE_KEY = 'project_info_domain_list'
+PROJECT_LICENSE_IMG_CACHE_KEY = 'project_license_img_cache_key'

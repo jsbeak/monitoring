@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.main, name='main'),
+    path('', views.main, name='dashboard'),
     path('api/', views.api  ),
     path('api_test/', views.api_test  ),
     path('dataInsert', views.dataInsert ),       
