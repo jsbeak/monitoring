@@ -25,7 +25,7 @@ SECRET_KEY = '1_re$xccw76xj9imb0&je_u4@f+zi_w0hh@qmcju9$w_=1yd9j'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1','e11d35d09913.ngrok.io']
 
 
 # Application definition
@@ -47,7 +47,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -146,3 +146,5 @@ CACHES = {
 
 PROJECT_DOMAIN_CACHE_KEY = 'project_info_domain_list'
 PROJECT_LICENSE_IMG_CACHE_KEY = 'project_license_img_cache_key'
+
+

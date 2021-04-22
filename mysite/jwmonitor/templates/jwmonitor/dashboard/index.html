@@ -46,6 +46,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}">
     <!-- END: Custom CSS-->
 
+    
 </head>
 <!-- END: Head-->
 
@@ -598,7 +599,7 @@
                                         <i class="bx bxs-detail font-medium-5"></i>
                                       </div>
                                       <div class="text-muted line-ellipsis">Projects</div>
-                                      <h3 class="mb-0">30</h3>
+                                      <h3 class="mb-0 counter-up">30</h3>
                                     </div>
                                   </div>
                                 </div>
@@ -609,7 +610,7 @@
                                         <i class="bx bx-happy font-medium-5"></i>
                                       </div>
                                       <div class="text-muted line-ellipsis">Accepted Domain</div>
-                                      <h3 class="mb-0">240</h3>
+                                      <h3 class="mb-0 counter-up">240</h3>
                                     </div>
                                   </div>
                                 </div>
@@ -620,7 +621,7 @@
                                           <i class="bx bx-sad font-medium-5"></i>
                                         </div>
                                         <div class="text-muted line-ellipsis">Unacceptable Domain</div>
-                                        <h3 class="mb-0">120</h3>
+                                        <h3 class="mb-0 counter-up">120</h3>
                                       </div>
                                     </div>
                                 </div>
@@ -642,13 +643,79 @@
                           </div>
                         </div>
                     </div>            
+                    
+                    <div class="row">
+                        <!-- ####################################################################################      -->
+                        <!--            SERVER  / DataBase Check                                                       -->    
+                        <!-- ####################################################################################      -->
+                        <div class="col-xl-12 col-md-12">
+                            <div class="card">
+                                <div class="card-header border-bottom d-flex justify-content-between align-items-center pr-2">
+                                    <h4 class="card-title d-flex align-items-center">
+                                        <i class="bx bx-broadcast font-medium-4 mr-1"></i>SERVER / DATABASE Response Rate</h4>
+                                    <!-- <i class="bx bx-dots-vertical-rounded font-medium-3 align-middle cursor-pointer"></i> -->
+                                </div>
+                                <div class="table-responsive">
+                                  <table class="table mb-0">
+                                    <thead>
+                                      <tr> 
+                                        <th>CLIENT</th>
+                                        <th>URL</th>
+                                        <th>SERVER</th>
+                                        <th>DATABASE</th>
+                                        <th>DATE</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td class="text-bold-500">Yonsei</td>
+                                        <td><a href="#">http://www.yonsei.ac.kr</a></td></td>
+                                        <td class="sorting_1"><i class="bx bxs-circle danger font-small-1 mr-50"></i><span>Expired</span></td>
+                                        <td class="sorting_1"><i class="bx bxs-circle success font-small-1 mr-50"></i><span>200ms</span></td>
+                                        <td>11.08.18</td>
+                                      </tr>
+                                      <tr>
+                                        <td class="text-bold-500">Yonsei</td>
+                                        <td><a href="#">http://www.yonsei.ac.kr</a></td></td>
+                                        <td class="sorting_1"><i class="bx bxs-circle danger font-small-1 mr-50"></i><span>Expired</span></td>
+                                        <td class="sorting_1"><i class="bx bxs-circle success font-small-1 mr-50"></i><span>200ms</span></td>
+                                        <td>11.08.18</td>
+                                      </tr>
+                                      <tr>
+                                        <td class="text-bold-500">Yonsei</td>
+                                        <td><a href="#">http://www.yonsei.ac.kr</a></td></td>
+                                        <td class="sorting_1"><i class="bx bxs-circle danger font-small-1 mr-50"></i><span>Expired</span></td>
+                                        <td class="sorting_1"><i class="bx bxs-circle success font-small-1 mr-50"></i><span>200ms</span></td>
+                                        <td>11.08.18</td>
+                                      </tr>
+                                      <tr>
+                                        <td class="text-bold-500">Yonsei</td>
+                                        <td><a href="#">http://www.yonsei.ac.kr</a></td></td>
+                                        <td class="sorting_1"><i class="bx bxs-circle danger font-small-1 mr-50"></i><span>Expired</span></td>
+                                        <td class="sorting_1"><i class="bx bxs-circle success font-small-1 mr-50"></i><span>200ms</span></td>
+                                        <td>11.08.18</td>
+                                      </tr>
+                                      <tr>
+                                        <td class="text-bold-500">Yonsei</td>
+                                        <td><a href="#">http://www.yonsei.ac.kr</a></td></td>
+                                        <td class="sorting_1"><i class="bx bxs-circle danger font-small-1 mr-50"></i><span>Expired</span></td>
+                                        <td class="sorting_1"><i class="bx bxs-circle success font-small-1 mr-50"></i><span>200ms</span></td>
+                                        <td>11.08.18</td>
+                                      </tr>
+                                      
+                                    </tbody>
+                                  </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 
                     <div class="row">
-                        
                         <!-- ####################################################################################      -->
                         <!--            C P U                                                                          -->    
                         <!-- ####################################################################################      -->
-                        <div class="col-xl-3 col-md-6 progress-card">
+                        <div class="col-xl-4 col-md-6 progress-card">
                             <div class="card">
                               <div class="card-header border-bottom d-flex justify-content-between align-items-center pr-2">
                                 <h4 class="card-title d-flex align-items-center">
@@ -662,64 +729,64 @@
                                       <td class="w-25">kookmin</td>
                                       <td>
                                         <div class="progress progress-bar-danger progress-sm mb-0">
-                                          <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%;"></div>
+                                          <div class="progress-bar" data-width="90" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" ></div>
                                         </div>
                                       </td>
-                                      <td class="w-25 text-right">90%</td>
+                                      <td class="w-25 text-right"><span class="counter-up">90</span>%</td>
                                     </tr>
                                     <tr>
                                       <td class="w-25">yonsei</td>
                                       <td>
                                         <div class="progress progress-bar-danger progress-sm mb-0">
-                                          <div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width:85%;"></div>
+                                          <div class="progress-bar" data-width="85" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" ></div>
                                         </div>
                                       </td>
-                                      <td class="w-25 text-right">85%</td>
+                                      <td class="w-25 text-right"><span class="counter-up">85</span>%</td>
                                     </tr>
                                     <tr>
                                       <td class="w-25">ewha</td>
                                       <td>
                                         <div class="progress progress-bar-warning progress-sm mb-0">
-                                          <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%;"></div>
+                                          <div class="progress-bar" data-width="80" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" ></div>
                                         </div>
                                       </td>
-                                      <td class="w-25 text-right">80%</td>
+                                      <td class="w-25 text-right"><span class="counter-up">80</span>%</td>
                                     </tr>
                                     <tr>
                                       <td class="w-25">ajou</td>
                                       <td>
                                         <div class="progress progress-bar-success progress-sm mb-0">
-                                          <div class="progress-bar" role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" style="width:35%;"></div>
+                                          <div class="progress-bar" data-width="35" role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" ></div>
                                         </div>
                                       </td>
-                                      <td class="w-25 text-right">35%</td>
+                                      <td class="w-25 text-right"><span class="counter-up">35</span>%</td>
                                     </tr>
                                     <tr>
                                       <td class="w-25">project</td>
                                       <td>
                                         <div class="progress progress-bar-success progress-sm mb-0">
-                                          <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width:30%;"></div>
+                                          <div class="progress-bar" data-width="30" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" ></div>
                                         </div>
                                       </td>
-                                      <td class="w-25 text-right">30%</td>
+                                      <td class="w-25 text-right"><span class="counter-up">30</span>%</td>
                                     </tr>
                                     <tr>
                                         <td class="w-25">project</td>
                                         <td>
                                           <div class="progress progress-bar-success progress-sm mb-0">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width:30%;"></div>
+                                            <div class="progress-bar" data-width="30" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" ></div>
                                           </div>
                                         </td>
-                                        <td class="w-25 text-right">30%</td>
+                                        <td class="w-25 text-right"><span class="counter-up">30</span>%</td>
                                       </tr>
                                       <tr>
                                         <td class="w-25">project</td>
                                         <td>
                                           <div class="progress progress-bar-success progress-sm mb-0">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width:30%;"></div>
+                                            <div class="progress-bar" data-width="30" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
                                           </div>
                                         </td>
-                                        <td class="w-25 text-right">30%</td>
+                                        <td class="w-25 text-right"><span class="counter-up">30</span>%</td>
                                       </tr>
                                   </tbody>
                                 </table>
@@ -730,7 +797,7 @@
                         <!-- ####################################################################################      -->
                         <!--            M E M O R Y                                                                    -->    
                         <!-- ####################################################################################      -->
-                        <div class="col-xl-3 col-md-6 progress-card">
+                        <div class="col-xl-4 col-md-6 progress-card">
                             <div class="card">
                               <div class="card-header border-bottom d-flex justify-content-between align-items-center pr-2">
                                 <h4 class="card-title d-flex align-items-center">
@@ -747,7 +814,7 @@
                                           <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%;"></div>
                                         </div>
                                       </td>
-                                      <td class="w-25 text-right">90%</td>
+                                      <td class="w-25 text-right"><span class="counter-up">90</span>%</td>
                                     </tr>
                                     <tr>
                                       <td class="w-25">yonsei</td>
@@ -780,7 +847,7 @@
                                       <td class="w-25">project</td>
                                       <td>
                                         <div class="progress progress-bar-success progress-sm mb-0">
-                                          <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width:30%;"></div>
+                                          <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                       </td>
                                       <td class="w-25 text-right">30%</td>
@@ -789,7 +856,7 @@
                                         <td class="w-25">project</td>
                                         <td>
                                           <div class="progress progress-bar-success progress-sm mb-0">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width:30%;"></div>
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
                                           </div>
                                         </td>
                                         <td class="w-25 text-right">30%</td>
@@ -798,7 +865,7 @@
                                         <td class="w-25">project</td>
                                         <td>
                                           <div class="progress progress-bar-success progress-sm mb-0">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width:30%;"></div>
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
                                           </div>
                                         </td>
                                         <td class="w-25 text-right">30%</td>
@@ -813,7 +880,7 @@
                         <!-- ####################################################################################      -->
                         <!--            H D D                                                                     -->    
                         <!-- ####################################################################################      -->
-                        <div class="col-xl-3 col-md-6 progress-card">
+                        <div class="col-xl-4 col-md-6 progress-card">
                             <div class="card">
                               <div class="card-header border-bottom d-flex justify-content-between align-items-center pr-2">
                                 <h4 class="card-title d-flex align-items-center">
@@ -893,90 +960,7 @@
                         </div>
                         
                         
-                        <div class="col-xl-3 col-md-6 progress-card">
-                            <div class="card">
-                                <div class="card-header border-bottom d-flex justify-content-between align-items-center pr-2">
-                                    <h4 class="card-title d-flex align-items-center">
-                                        <i class="bx bx-data font-medium-4 mr-1"></i>DATABASE Response Rate</h4>
-                                    <!-- <i class="bx bx-dots-vertical-rounded font-medium-3 align-middle cursor-pointer"></i> -->
-                                </div>
-                                <table class="table table-borderless">
-                                    
-                                    <tbody>
-                                        <tr>
-                                            <td class="pr-0">
-                                            <!-- <span class="text-bold-500 d-block">Frest</span> -->
-                                            <small>Yonsei</small>
-                                            </td>
-                                            <td class="text-danger">0ms</td>
-                                            <td class="text-right">
-                                            <div class="badge badge-pill badge-light-danger">Fail</div>
-                                            </td>  
-                                        </tr>
-                                        <tr>
-                                            <td class="pr-0">
-                                            <!-- <span class="text-bold-500 d-block">Frest</span> -->
-                                            <small>kookmin</small>
-                                            </td>
-                                            <td class="text-success">200ms</td>
-                                            <td class="text-right">
-                                            <div class="badge badge-pill badge-light-success">Live</div>
-                                            </td>  
-                                        </tr>
-                                        <tr>
-                                            <td class="pr-0">
-                                            <!-- <span class="text-bold-500 d-block">Frest</span> -->
-                                            <small>kookmin</small>
-                                            </td>
-                                            <td class="text-success">200ms</td>
-                                            <td class="text-right">
-                                            <div class="badge badge-pill badge-light-success">Live</div>
-                                            </td>  
-                                        </tr>
-                                        <tr>
-                                            <td class="pr-0">
-                                            <!-- <span class="text-bold-500 d-block">Frest</span> -->
-                                            <small>kookmin</small>
-                                            </td>
-                                            <td class="text-success">200ms</td>
-                                            <td class="text-right">
-                                            <div class="badge badge-pill badge-light-success">Live</div>
-                                            </td>  
-                                        </tr>
-                                        <tr>
-                                            <td class="pr-0">
-                                            <!-- <span class="text-bold-500 d-block">Frest</span> -->
-                                            <small>kookmin</small>
-                                            </td>
-                                            <td class="text-success">200ms</td>
-                                            <td class="text-right">
-                                            <div class="badge badge-pill badge-light-success">Live</div>
-                                            </td>  
-                                        </tr>
-                                        <tr>
-                                            <td class="pr-0">
-                                            <!-- <span class="text-bold-500 d-block">Frest</span> -->
-                                            <small>kookmin</small>
-                                            </td>
-                                            <td class="text-success">200ms</td>
-                                            <td class="text-right">
-                                            <div class="badge badge-pill badge-light-success">Live</div>
-                                            </td>  
-                                        </tr>
-                                        <tr>
-                                            <td class="pr-0">
-                                            <!-- <span class="text-bold-500 d-block">Frest</span> -->
-                                            <small>kookmin</small>
-                                            </td>
-                                            <td class="text-success">200ms</td>
-                                            <td class="text-right">
-                                            <div class="badge badge-pill badge-light-success">Live</div>
-                                            </td>  
-                                        </tr>
-                                    </tbody>
-                                  </table>    
-                            </div>
-                        </div>
+                        
 
                         <!-- <div class="col-3">
                             <div class="card">
@@ -1244,7 +1228,7 @@
 
     <!-- BEGIN: Page Vendor JS-->
     <script src="{% static 'app-assets/vendors/js/ui/jquery.sticky.js' %}"></script>
-    <script src="{% static 'app-assets/vendors/js/charts/apexcharts.min.js' %}"></script>
+    <!-- <script src="{% static 'app-assets/vendors/js/charts/apexcharts.min.js' %}"></script> -->
     <script src="{% static 'app-assets/vendors/js/extensions/dragula.min.js' %}"></script>
     <!-- END: Page Vendor JS-->
 
@@ -1257,8 +1241,13 @@
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
-    <script src="{% static 'app-assets/js/scripts/pages/dashboard-analytics.js' %}"></script>
+    <!-- <script src="{% static 'app-assets/js/scripts/pages/dashboard-analytics.js' %}"></script> -->
     <!-- END: Page JS-->
+
+
+    <!-- Custom JS -->
+    
+    <script src="{% static 'assets/js/scripts.js' %}"></script>
 
 </body>
 <!-- END: Body-->
