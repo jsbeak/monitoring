@@ -42,10 +42,11 @@
     <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/dashboard-analytics.css' %}">
     <!-- END: Page CSS-->
 
+    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}">
     <!-- END: Custom CSS-->
-
+    
     
 </head>
 <!-- END: Head-->
@@ -598,8 +599,8 @@
                                       <div class="badge-circle badge-circle-lg badge-circle-light-success mx-auto mb-50">
                                         <i class="bx bxs-detail font-medium-5"></i>
                                       </div>
-                                      <div class="text-muted line-ellipsis">Projects</div>
-                                      <h3 class="mb-0 counter-up">30</h3>
+                                      <div class="text-muted line-ellipsis">Projects </div>
+                                      <h3 class="mb-0 counter-up">{{ project_cnt }} </h3>
                                     </div>
                                   </div>
                                 </div>
@@ -610,7 +611,7 @@
                                         <i class="bx bx-happy font-medium-5"></i>
                                       </div>
                                       <div class="text-muted line-ellipsis">Accepted Domain</div>
-                                      <h3 class="mb-0 counter-up">240</h3>
+                                      <h3 class="mb-0 counter-up"> {{ accepted_domain_cnt }} </h3>
                                     </div>
                                   </div>
                                 </div>
@@ -621,7 +622,7 @@
                                           <i class="bx bx-sad font-medium-5"></i>
                                         </div>
                                         <div class="text-muted line-ellipsis">Unacceptable Domain</div>
-                                        <h3 class="mb-0 counter-up">120</h3>
+                                        <h3 class="mb-0 counter-up">{{ unacceptable_domain_cnt }}</h3>
                                       </div>
                                     </div>
                                 </div>
@@ -656,8 +657,8 @@
                                     <!-- <i class="bx bx-dots-vertical-rounded font-medium-3 align-middle cursor-pointer"></i> -->
                                 </div>
                                 <div class="table-responsive">
-                                  <table class="table mb-0">
-                                    <thead>
+                                  <table class="table mb-0 table-action">
+                                    <thead class="thead-dark">
                                       <tr> 
                                         <th>CLIENT</th>
                                         <th>URL</th>
@@ -667,35 +668,35 @@
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      <tr>
+                                      <tr class="table-active" style="display: none;">
+                                        <td class="text-bold-500">연세대학교</td>
+                                        <td><a href="#">http://www.yonsei.ac.kr</a></td></td>
+                                        <td class="sorting_1"><i class="bx bxs-circle danger font-small-1 mr-50"></i><span>Expired</span></td>
+                                        <td class="sorting_1"><i class="bx bxs-circle success font-small-1 mr-50"></i><span>200ms</span></td>
+                                        <td>11.08.18</td>
+                                      </tr>
+                                      <tr style="display: none;">
                                         <td class="text-bold-500">Yonsei</td>
                                         <td><a href="#">http://www.yonsei.ac.kr</a></td></td>
                                         <td class="sorting_1"><i class="bx bxs-circle danger font-small-1 mr-50"></i><span>Expired</span></td>
                                         <td class="sorting_1"><i class="bx bxs-circle success font-small-1 mr-50"></i><span>200ms</span></td>
                                         <td>11.08.18</td>
                                       </tr>
-                                      <tr>
+                                      <tr style="display: none;">
                                         <td class="text-bold-500">Yonsei</td>
                                         <td><a href="#">http://www.yonsei.ac.kr</a></td></td>
                                         <td class="sorting_1"><i class="bx bxs-circle danger font-small-1 mr-50"></i><span>Expired</span></td>
                                         <td class="sorting_1"><i class="bx bxs-circle success font-small-1 mr-50"></i><span>200ms</span></td>
                                         <td>11.08.18</td>
                                       </tr>
-                                      <tr>
+                                      <tr style="display: none;">
                                         <td class="text-bold-500">Yonsei</td>
                                         <td><a href="#">http://www.yonsei.ac.kr</a></td></td>
                                         <td class="sorting_1"><i class="bx bxs-circle danger font-small-1 mr-50"></i><span>Expired</span></td>
                                         <td class="sorting_1"><i class="bx bxs-circle success font-small-1 mr-50"></i><span>200ms</span></td>
                                         <td>11.08.18</td>
                                       </tr>
-                                      <tr>
-                                        <td class="text-bold-500">Yonsei</td>
-                                        <td><a href="#">http://www.yonsei.ac.kr</a></td></td>
-                                        <td class="sorting_1"><i class="bx bxs-circle danger font-small-1 mr-50"></i><span>Expired</span></td>
-                                        <td class="sorting_1"><i class="bx bxs-circle success font-small-1 mr-50"></i><span>200ms</span></td>
-                                        <td>11.08.18</td>
-                                      </tr>
-                                      <tr>
+                                      <tr style="display: none;">
                                         <td class="text-bold-500">Yonsei</td>
                                         <td><a href="#">http://www.yonsei.ac.kr</a></td></td>
                                         <td class="sorting_1"><i class="bx bxs-circle danger font-small-1 mr-50"></i><span>Expired</span></td>

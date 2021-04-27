@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -123,6 +124,13 @@ USE_TZ = True
 STATIC_URL = '/static/'
 # 정적파일 경로를 추가
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+
+########################
+## 로그인 페이지 
+########################
+LOGIN_URL='/admin/login/'
+
 
 
 ##########################

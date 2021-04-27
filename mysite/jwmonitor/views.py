@@ -7,6 +7,7 @@ from django.db import transaction
 from django.http import JsonResponse
 from django.conf import settings
 from urllib.parse import urlparse
+from django.contrib.auth.decorators import login_required
 
 from .models import ProjectInfo
 from .models import ServerInfo
@@ -33,14 +34,40 @@ domain_license_cache_key = settings.PROJECT_LICENSE_IMG_CACHE_KEY
 
 
 
+#######################################################
+
+#   D A S H B O A R D
 
 # 요청(request) 을 넘겨받아 render 메서드를 호출하고 
 # jwmonitor/dashboard/index.html 템플릿을 보여준다.
+##############################################
+@login_required   #@permission_required 로 사용시 명시된 권한을 가진 사람만 접근가능
 def main(reqeust):
-    #쿼리셋
-    projects = ProjectInfo.objects.filter(pro_active_yn='Y').order_by('pro_no')
+
+    ## 메인 상단 카드 영역 -------------------------------------------------------------------------
+
+    #프로젝트 수
+    project_cnt = ProjectInfo.objects.filter(pro_active_yn='Y').count()
     
-    return render(reqeust, 'jwmonitor/dashboard/index.html' ,{'projects' : projects })
+    # 라이센스등록 허용 도메인 수
+    accepted_domain_list = getConfirmDomainList()    
+
+    # 미등록 도메인 수
+    unacceptable_domain_cnt  =  DomainInfo.objects.filter(dl_confirm='N').count()
+    
+    ## End  메인 상단 카드 영역 -------------------------------------------------------------------------
+
+
+
+
+    context = {
+        'project_cnt': project_cnt ,
+        'unacceptable_domain_cnt' : unacceptable_domain_cnt,
+        'accepted_domain_cnt'   :  len(accepted_domain_list)
+        }
+    
+
+    return render(reqeust, 'jwmonitor/dashboard/index.html' , context)
 
 # 테스트용 
 def api_test(reqeust):
@@ -129,16 +156,17 @@ def check_domain(request):
         #checkConfirmDomainList(request)
         # 등록된 전체 도메인 리스트를 가져온다.
         if not cache.get(domain_cache_key):
-
-            domain_list = []    
-            porjectInfoList = ProjectInfo.objects.filter(pro_active_yn='Y', pro_domain__isnull=False).only('pro_domain')
             
-            for projectInfo in porjectInfoList:
+            
+            domain_list = getConfirmDomainList()    
+            # porjectInfoList = ProjectInfo.objects.filter(pro_active_yn='Y', pro_domain__isnull=False).only('pro_domain')
+            
+            # for projectInfo in porjectInfoList:
                 
-                for domain in projectInfo.pro_domain.split(','):
-                    # *.sample.com 에서 '*.' 을 제거하고 리스트업  
-                    domain = domain.replace('*.','')  
-                    domain_list.append(domain )
+            #     for domain in projectInfo.pro_domain.split(','):
+            #         # *.sample.com 에서 '*.' 을 제거하고 리스트업  
+            #         domain = domain.replace('*.','')  
+            #         domain_list.append(domain )
                     
             # 전체 도메인 캐시에 저장        
             cache.set(domain_cache_key, domain_list)
@@ -402,3 +430,21 @@ def check_ip_address(domain):
     except ValueError:
         return False
 
+
+######################################################
+# 등록 된 허용 도메인 정보
+######################################################
+def getConfirmDomainList():
+    domain_list = []    
+    porjectInfoList = ProjectInfo.objects.filter(pro_active_yn='Y', pro_domain__isnull=False).only('pro_domain')
+    
+    for projectInfo in porjectInfoList:
+        
+        for domain in projectInfo.pro_domain.split(','):
+            # *.sample.com 에서 '*.' 을 제거하고 리스트업  
+            domain = domain.replace('*.','')  
+            domain_list.append(domain )
+    
+    return domain_list
+
+            

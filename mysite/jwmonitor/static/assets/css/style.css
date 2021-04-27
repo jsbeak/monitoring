@@ -10,3 +10,17 @@ NOTE:
 PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
 WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
  
+body {font-family:"Spoqa Han Sans Neo", Rubik, Helvetica, Arial, serif !important;}
+
+@font-face {
+    font-family: 'Spoqa Han Sans Neo';
+    font-style: normal;
+    font-weight: 300;
+    src: local('※'),
+	
+    url('/static/fonts/SpoqaHanSansNeo-Regular.eot'),
+    url('/static/fonts/SpoqaHanSansNeo-Regular.woff') format('woff'),
+    url('/static/fonts/SpoqaHanSansNeo-Regular.eot') format('opentype'),
+    
+    unicode-range:U+AC00-U+D7A3;
+}
