@@ -33,6 +33,7 @@ class ProjectInfo( models.Model):
     pro_craw_url  = models.CharField(max_length=250 , null=True , blank=True )
     pro_create_dt = models.DateTimeField(default=timezone.now)
     pro_domain    = models.TextField(null=True, blank=True)
+    pro_ip        = models.CharField(max_length=250 , null=True , blank=True )
 
     def save(self, *args, **kwargs):
         cache.delete(settings.PROJECT_DOMAIN_CACHE_KEY)  

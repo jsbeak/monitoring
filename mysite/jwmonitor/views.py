@@ -16,13 +16,15 @@ from .models import MemoryInfo
 from .models import HddInfo
 from .models import Config
 from .models import DomainInfo
+from django.db.models import F
 
 from django.core.cache import cache
-
+from django.db.models import Max
 from PIL import Image
 import json
 import ipaddress
 import re
+import requests
 
 
 # 전역변수
@@ -50,7 +52,7 @@ def main(reqeust):
     project_cnt = ProjectInfo.objects.filter(pro_active_yn='Y').count()
     
     # 라이센스등록 허용 도메인 수
-    accepted_domain_list = getConfirmDomainList()    
+    accepted_domain_list = get_confirm_domain_list()    
 
     # 미등록 도메인 수
     unacceptable_domain_cnt  =  DomainInfo.objects.filter(dl_confirm='N').count()
@@ -58,12 +60,80 @@ def main(reqeust):
     ## End  메인 상단 카드 영역 -------------------------------------------------------------------------
 
 
+    ## 서버 사용량 영역     -------------------------------------------------------------------------
 
+    # CPU 사용량
+    # select 
+	# c.* from
+	# jwmonitor_cpuinfo c join (
+	# 	select 
+	# 		cpu_server_no , max(  cpu_no	)  as  cpu_no
+	# 		from jwmonitor_cpuinfo 
+	# 		GROUP by cpu_server_no 
+	# )  M
+	# where M.cpu_no = c.cpu_no
+    cpu_max_set = CpuInfo.objects.values('cpu_server_no').annotate(cpu_no=Max('cpu_no'))
+
+    cpu_no_list = []
+    for cpu in cpu_max_set:
+        cpu_no_list.append(cpu['cpu_no'])
+
+    cpu_info = CpuInfo.objects.all().values(
+        'cpu_no',
+        'cpu_server_no' , 
+        'cpu_usage' ,
+        'cpu_idle',
+        server_pro_no=F('cpu_server_no__server_pro_no'), 
+        client_id=F('cpu_server_no__server_pro_no__pro_client_id') 
+        ).filter(cpu_no__in=cpu_no_list ).order_by('-cpu_usage')[:10][:10]
+    
+
+    ## End 서버 사용량 영역     -------------------------------------------------------------------------
+
+
+    ## 메모리 사용량 영역     -------------------------------------------------------------------------
+    memory_max_set = MemoryInfo.objects.values('memory_server_no').annotate(memory_no=Max('memory_no'))
+
+    memory_no_list = []
+    for mem in memory_max_set:
+        memory_no_list.append(mem['memory_no'])
+
+    memory_info = MemoryInfo.objects.all().values(
+        'memory_no',
+        'memory_server_no' , 
+        'memory_usage' ,
+        'memory_idle',
+        server_pro_no=F('memory_server_no__server_pro_no'), 
+        client_id=F('memory_server_no__server_pro_no__pro_client_id') 
+        ).filter(memory_no__in=memory_no_list ).order_by('-memory_usage')[:10]
+
+    ## End 메모리 사용량 영역     -------------------------------------------------------------------------
+
+    ## HDD 사용량 영역     -------------------------------------------------------------------------
+    hdd_max_set = HddInfo.objects.values('hdd_server_no').annotate(hdd_no=Max('hdd_no'))
+
+    hdd_no_list = []
+    for hdd in hdd_max_set:
+        hdd_no_list.append(hdd['hdd_no'])
+
+    hdd_info = HddInfo.objects.all().values(
+        'hdd_no',
+        'hdd_server_no' , 
+        'hdd_usage' ,
+        'hdd_idle',
+        server_pro_no=F('hdd_server_no__server_pro_no'), 
+        client_id=F('hdd_server_no__server_pro_no__pro_client_id') 
+        ).filter(hdd_no__in=hdd_no_list ).order_by('-hdd_usage')[:10]
+
+    ## End HDD 사용량 영역     -------------------------------------------------------------------------
 
     context = {
         'project_cnt': project_cnt ,
         'unacceptable_domain_cnt' : unacceptable_domain_cnt,
-        'accepted_domain_cnt'   :  len(accepted_domain_list)
+        'accepted_domain_cnt'   :  len(accepted_domain_list),
+        'cpu_info'              : cpu_info,
+        'memory_info'           : memory_info,
+        'hdd_info'              : hdd_info
         }
     
 
@@ -90,7 +160,7 @@ def api_test(reqeust):
 ######################################################
 # 크롤링 agent 에서 크롤링할 프로젝트 목록 정보 요청
 ######################################################
-def api(reqeust):
+def craw_info(reqeust):
     
     config_json   = serializers.serialize('json', Config.objects.filter(con_id='craw.engine.cycle.time') ) 
     projects_json = serializers.serialize('json', ProjectInfo.objects.filter(pro_active_yn='Y').order_by('pro_no') )
@@ -158,7 +228,7 @@ def check_domain(request):
         if not cache.get(domain_cache_key):
             
             
-            domain_list = getConfirmDomainList()    
+            domain_list = get_confirm_domain_list()    
             # porjectInfoList = ProjectInfo.objects.filter(pro_active_yn='Y', pro_domain__isnull=False).only('pro_domain')
             
             # for projectInfo in porjectInfoList:
@@ -377,6 +447,37 @@ def dataInsert(request):
     return HttpResponse(True)
 
 
+@csrf_exempt
+@login_required()
+def get_client_status(request):
+
+    ## 클라이언트 서버 상태  ---------------------------------------------------------------------------
+    
+    client_host = request.POST['client_host']
+    result_code = False
+    timeout = 5
+    time = 0 
+    state = "Not connected"
+
+    try:
+	    #time = requests.get( client_host , timeout=timeout)
+        time = requests.get( client_host, timeout= timeout ).elapsed.total_seconds()
+        state = "Active"
+    except (requests.ConnectionError, requests.Timeout) as exception:
+        send_admin_alarm()
+    except:
+        send_admin_alarm()
+    
+    ## END 클라이언트 서버 상태  ---------------------------------------------------------------------------
+
+
+    context = {
+            'time' : int(time * 1000) ,
+            'state' : state
+            }
+    
+    return HttpResponse(  json.dumps(context) , content_type="application/json")
+
 
 ## **********************************************************************************
 ## Util Method 
@@ -434,7 +535,7 @@ def check_ip_address(domain):
 ######################################################
 # 등록 된 허용 도메인 정보
 ######################################################
-def getConfirmDomainList():
+def get_confirm_domain_list():    
     domain_list = []    
     porjectInfoList = ProjectInfo.objects.filter(pro_active_yn='Y', pro_domain__isnull=False).only('pro_domain')
     
@@ -447,4 +548,20 @@ def getConfirmDomainList():
     
     return domain_list
 
-            
+######################################################
+# 활성화된 프로젝트 목록
+######################################################            
+@csrf_exempt
+@login_required()
+def get_project(request):
+    
+    projects = serializers.serialize('json' ,  ProjectInfo.objects.filter(pro_active_yn='Y').order_by('pro_no') )
+
+    return HttpResponse( projects )
+
+
+######################################################
+# 관리자에게 메시지 발송
+######################################################            
+def send_admin_alarm():
+    print("관리자에게 메시지를 발송합니다. (텔레그램 연동)" )

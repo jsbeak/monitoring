@@ -726,69 +726,20 @@
                               <div class="table-responsive">
                                 <table class="table table-borderless">
                                   <tbody>
+                                    
+                                    {% for cpu in cpu_info %}
+
                                     <tr>
-                                      <td class="w-25">kookmin</td>
+                                      <td class="w-25">{{cpu.client_id}}</td>
                                       <td>
-                                        <div class="progress progress-bar-danger progress-sm mb-0">
-                                          <div class="progress-bar" data-width="90" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" ></div>
+                                        <div class="progress progress-bar-{% if cpu.cpu_usage > 90 %}danger{% elif cpu.cpu_usage > 80  %}warning{% else %}success{% endif %} progress-sm mb-0">
+                                          <div class="progress-bar" data-width="{{cpu.cpu_usage}}" role="progressbar" aria-valuenow="{{cpu.cpu_usage}}" aria-valuemin="0" aria-valuemax="100" ></div>
                                         </div>
                                       </td>
-                                      <td class="w-25 text-right"><span class="counter-up">90</span>%</td>
+                                      <td class="w-25 text-right"><span class="counter-up">{{cpu.cpu_usage}}</span>%</td>
                                     </tr>
-                                    <tr>
-                                      <td class="w-25">yonsei</td>
-                                      <td>
-                                        <div class="progress progress-bar-danger progress-sm mb-0">
-                                          <div class="progress-bar" data-width="85" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" ></div>
-                                        </div>
-                                      </td>
-                                      <td class="w-25 text-right"><span class="counter-up">85</span>%</td>
-                                    </tr>
-                                    <tr>
-                                      <td class="w-25">ewha</td>
-                                      <td>
-                                        <div class="progress progress-bar-warning progress-sm mb-0">
-                                          <div class="progress-bar" data-width="80" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" ></div>
-                                        </div>
-                                      </td>
-                                      <td class="w-25 text-right"><span class="counter-up">80</span>%</td>
-                                    </tr>
-                                    <tr>
-                                      <td class="w-25">ajou</td>
-                                      <td>
-                                        <div class="progress progress-bar-success progress-sm mb-0">
-                                          <div class="progress-bar" data-width="35" role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" ></div>
-                                        </div>
-                                      </td>
-                                      <td class="w-25 text-right"><span class="counter-up">35</span>%</td>
-                                    </tr>
-                                    <tr>
-                                      <td class="w-25">project</td>
-                                      <td>
-                                        <div class="progress progress-bar-success progress-sm mb-0">
-                                          <div class="progress-bar" data-width="30" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" ></div>
-                                        </div>
-                                      </td>
-                                      <td class="w-25 text-right"><span class="counter-up">30</span>%</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-25">project</td>
-                                        <td>
-                                          <div class="progress progress-bar-success progress-sm mb-0">
-                                            <div class="progress-bar" data-width="30" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" ></div>
-                                          </div>
-                                        </td>
-                                        <td class="w-25 text-right"><span class="counter-up">30</span>%</td>
-                                      </tr>
-                                      <tr>
-                                        <td class="w-25">project</td>
-                                        <td>
-                                          <div class="progress progress-bar-success progress-sm mb-0">
-                                            <div class="progress-bar" data-width="30" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                          </div>
-                                        </td>
-                                        <td class="w-25 text-right"><span class="counter-up">30</span>%</td>
-                                      </tr>
+                                    {% endfor %}
+                                    
                                   </tbody>
                                 </table>
                               </div>
@@ -808,69 +759,21 @@
                               <div class="table-responsive">
                                 <table class="table table-borderless">
                                   <tbody>
+
+                                    {% for mem in memory_info %}
+
+
                                     <tr>
-                                      <td class="w-25">kookmin</td>
+                                      <td class="w-25">{{mem.client_id}}</td>
                                       <td>
-                                        <div class="progress progress-bar-danger progress-sm mb-0">
-                                          <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%;"></div>
+                                        <div class="progress progress-bar-{% if mem.memory_usage > 90 %}danger{% elif mem.memory_usage > 80  %}warning{% else %}success{% endif %} progress-sm mb-0">
+                                          <div class="progress-bar" data-width="{{mem.memory_usage}}" role="progressbar" aria-valuenow="{{mem.memory_usage}}" aria-valuemin="0" aria-valuemax="100" ></div>
                                         </div>
                                       </td>
-                                      <td class="w-25 text-right"><span class="counter-up">90</span>%</td>
+                                      <td class="w-25 text-right"><span class="counter-up">{{mem.memory_usage}}</span>%</td>
                                     </tr>
-                                    <tr>
-                                      <td class="w-25">yonsei</td>
-                                      <td>
-                                        <div class="progress progress-bar-danger progress-sm mb-0">
-                                          <div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width:85%;"></div>
-                                        </div>
-                                      </td>
-                                      <td class="w-25 text-right">85%</td>
-                                    </tr>
-                                    <tr>
-                                      <td class="w-25">ewha</td>
-                                      <td>
-                                        <div class="progress progress-bar-warning progress-sm mb-0">
-                                          <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%;"></div>
-                                        </div>
-                                      </td>
-                                      <td class="w-25 text-right">80%</td>
-                                    </tr>
-                                    <tr>
-                                      <td class="w-25">ajou</td>
-                                      <td>
-                                        <div class="progress progress-bar-success progress-sm mb-0">
-                                          <div class="progress-bar" role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" style="width:35%;"></div>
-                                        </div>
-                                      </td>
-                                      <td class="w-25 text-right">35%</td>
-                                    </tr>
-                                    <tr>
-                                      <td class="w-25">project</td>
-                                      <td>
-                                        <div class="progress progress-bar-success progress-sm mb-0">
-                                          <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                      </td>
-                                      <td class="w-25 text-right">30%</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-25">project</td>
-                                        <td>
-                                          <div class="progress progress-bar-success progress-sm mb-0">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                          </div>
-                                        </td>
-                                        <td class="w-25 text-right">30%</td>
-                                      </tr>
-                                      <tr>
-                                        <td class="w-25">project</td>
-                                        <td>
-                                          <div class="progress progress-bar-success progress-sm mb-0">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                          </div>
-                                        </td>
-                                        <td class="w-25 text-right">30%</td>
-                                      </tr>
+                                    {% endfor %}
+                                    
                                   </tbody>
                                 </table>
                               </div>
@@ -891,69 +794,19 @@
                               <div class="table-responsive">
                                 <table class="table table-borderless">
                                   <tbody>
+                                    
+                                    {% for hdd in hdd_info %}
                                     <tr>
-                                      <td class="w-25">kookmin</td>
+                                      <td class="w-25">{{hdd.client_id}}</td>
                                       <td>
-                                        <div class="progress progress-bar-danger progress-sm mb-0">
-                                          <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%;"></div>
+                                        <div class="progress progress-bar-{% if hdd.hdd_usage > 90 %}danger{% elif hdd.hdd_usage > 80  %}warning{% else %}success{% endif %} progress-sm mb-0">
+                                          <div class="progress-bar" data-width="{{hdd.hdd_usage}}" role="progressbar" aria-valuenow="{{hdd.hdd_usage}}" aria-valuemin="0" aria-valuemax="100" ></div>
                                         </div>
                                       </td>
-                                      <td class="w-25 text-right">90%</td>
+                                      <td class="w-25 text-right"><span class="counter-up">{{hdd.hdd_usage}}</span>%</td>
                                     </tr>
-                                    <tr>
-                                      <td class="w-25">yonsei</td>
-                                      <td>
-                                        <div class="progress progress-bar-danger progress-sm mb-0">
-                                          <div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width:85%;"></div>
-                                        </div>
-                                      </td>
-                                      <td class="w-25 text-right">85%</td>
-                                    </tr>
-                                    <tr>
-                                      <td class="w-25">ewha</td>
-                                      <td>
-                                        <div class="progress progress-bar-warning progress-sm mb-0">
-                                          <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%;"></div>
-                                        </div>
-                                      </td>
-                                      <td class="w-25 text-right">80%</td>
-                                    </tr>
-                                    <tr>
-                                      <td class="w-25">ajou</td>
-                                      <td>
-                                        <div class="progress progress-bar-success progress-sm mb-0">
-                                          <div class="progress-bar" role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" style="width:35%;"></div>
-                                        </div>
-                                      </td>
-                                      <td class="w-25 text-right">35%</td>
-                                    </tr>
-                                    <tr>
-                                      <td class="w-25">project</td>
-                                      <td>
-                                        <div class="progress progress-bar-success progress-sm mb-0">
-                                          <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width:30%;"></div>
-                                        </div>
-                                      </td>
-                                      <td class="w-25 text-right">30%</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-25">project</td>
-                                        <td>
-                                          <div class="progress progress-bar-success progress-sm mb-0">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width:30%;"></div>
-                                          </div>
-                                        </td>
-                                        <td class="w-25 text-right">30%</td>
-                                      </tr>
-                                      <tr>
-                                        <td class="w-25">project</td>
-                                        <td>
-                                          <div class="progress progress-bar-success progress-sm mb-0">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width:30%;"></div>
-                                          </div>
-                                        </td>
-                                        <td class="w-25 text-right">30%</td>
-                                      </tr>
+                                    {% endfor %}        
+
                                   </tbody>
                                 </table>
                               </div>
