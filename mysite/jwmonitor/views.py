@@ -20,12 +20,13 @@ from django.db.models import F
 
 from django.core.cache import cache
 from django.db.models import Max
+from datetime import datetime
 from PIL import Image
 import json
 import ipaddress
 import re
 import requests
-
+import telegram
 
 # 전역변수
 domain_cache_key         = settings.PROJECT_DOMAIN_CACHE_KEY
@@ -464,16 +465,19 @@ def get_client_status(request):
         time = requests.get( client_host, timeout= timeout ).elapsed.total_seconds()
         state = "Active"
     except (requests.ConnectionError, requests.Timeout) as exception:
-        send_admin_alarm()
+        send_admin_alarm(client_host)
     except:
-        send_admin_alarm()
+        send_admin_alarm(client_host)
     
     ## END 클라이언트 서버 상태  ---------------------------------------------------------------------------
 
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
 
     context = {
             'time' : int(time * 1000) ,
-            'state' : state
+            'state' : state,
+            'date' : current_time
             }
     
     return HttpResponse(  json.dumps(context) , content_type="application/json")
@@ -561,7 +565,18 @@ def get_project(request):
 
 
 ######################################################
-# 관리자에게 메시지 발송
+# 관리자에게 메시지 발송 ( https://vmpo.tistory.com/85 ) 
 ######################################################            
-def send_admin_alarm():
-    print("관리자에게 메시지를 발송합니다. (텔레그램 연동)" )
+def send_admin_alarm(client_host):
+    
+    project_info = ProjectInfo.objects.get(pro_url=client_host)
+
+    message = project_info.pro_client_nm + '('  +  project_info.pro_url + ') 서버접속이 원할하지 않습니다. 확인이 필요합니다.' 
+
+    telgm_token = '1728694309:AAE6PDHdX5yhLn3CtavuT74SQ_m3BkUtrNs'
+    bot = telegram.Bot(token = telgm_token)
+
+    # 대화내용 가져오기 (chat_id )
+    #updates = bot.getUpdates()
+    bot.sendMessage(chat_id = '286351362', text=message )
+

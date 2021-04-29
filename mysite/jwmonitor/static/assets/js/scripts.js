@@ -3,6 +3,9 @@ var intervalTime = 10000;
 var project_list = []; 
 var intervalCnt = 0; 
 
+// 실시간 서버 상태정보 최대 노출개수
+var SERVER_DB_CNT = 6;
+
 
 (function(window, undefined) {
   'use strict';
@@ -81,6 +84,7 @@ function initClientCheckInterval(){
 }
 
 // 메인 대시보드 server / db 상태 갱신
+
 function updateServerStatus(project){
 
   //console.log(  project.fields.pro_craw_url )     
@@ -91,25 +95,57 @@ function updateServerStatus(project){
     data  : { 'client_host' : project.fields.pro_url },
     async: false,
     success: function(response){ 
+      
+      var stateClass = "success";
+      var stateText = "Active";
+      if( response.time == 0 ){
+        stateClass = "danger";
+        stateText = "Expired";
+      }
 
-        var html ='' ;
+      var html ='' ;
+      
+      html += '<tr class="' + ( response.time == 0 ?  'table-active' : '')  + '"  style="display: none;">';
+      html += '<td class="text-bold-500">' + project.fields.pro_client_nm + '</td>';
+      html += '<td><a href="' + project.fields.pro_url +'" target="_blank">'+ project.fields.pro_url + '</a></td></td>';
+      html += '<td class="sorting_1"><i class="bx bxs-circle ' + stateClass +' font-small-1 mr-50"></i><span>' + stateText +'/'  + response.time + 'ms</span></td>';
+      html += '<td class="sorting_1"><i class="bx bxs-circle ' + stateClass +' font-small-1 mr-50"></i><span> - </span></td>';
+      html += '<td>' + response.date + '</td>';
+      html += '</tr>';
+
+      
+      var curCnt = $("#server-db-table tbody tr").not(".table-active").length;
+
+      // 최대개수 노출시 마지막값을 삭제
+      if( curCnt == SERVER_DB_CNT ){
+        //$("#server-db-table tbody tr").not(".table-active").last().remove();
+        $("#server-db-table tbody tr").last().fadeOut(300 , function(){
+          $(this).remove();
+        })
+      }
+
+      if( $("#server-db-table tbody tr").length == 0 ){
         
-        html += '<tr class="' + ( response.time == 0 ?  'table-active' : '')  + '" >';
-        html += '<td class="text-bold-500">연세대학교</td>';
-        html += '<td><a href="#">http://www.yonsei.ac.kr</a></td></td>';
-        html += '<td class="sorting_1"><i class="bx bxs-circle danger font-small-1 mr-50"></i><span>Expired</span></td>';
-        html += '<td class="sorting_1"><i class="bx bxs-circle success font-small-1 mr-50"></i><span>200ms</span></td>';
-        html += '<td>11.08.18</td>';
-        html += '</tr>';
+        $("#server-db-table tbody").append(html);
+        $("#server-db-table tbody tr:hidden").delay(500).show(1200);
         
+
+      }else{
+        $("#server-db-table tbody").prepend(html);
+        $("#server-db-table tbody tr:hidden").delay(500).show(1200);  
+        
+      }
+
     }
   });
 }
 
 
 
-var isCheckStatus = false;
 
+/**
+ *  프로젝트 리스트 정보 호출
+ */
 function getProject(){
 
   $.ajax({
@@ -117,14 +153,9 @@ function getProject(){
     dataType: "json",
     async: false,
     success: function(response){ 
-        //var data = response 
+        
         project_list = response;
-        //intervalTime = project_list.length * 10000; // 프로젝트당 10초
-        //for( var i=0; i< data.length; i++ ){
-        //  console.log(  data[i].fields.pro_url )
-        //  console.log(  data[i].fields.pro_craw_url ) 
-        //}
-        //isCheckStatus = false;
+        
     }
   });
 }
