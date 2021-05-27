@@ -6,9 +6,13 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 from django.http import JsonResponse
 from django.conf import settings
-from urllib.parse import urlparse
+from django.db.models import F
 from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
+from django.db.models import Max
+from background_task import background # basckground-task 
 
+from urllib.parse import urlparse
 from .models import ProjectInfo
 from .models import ServerInfo
 from .models import CpuInfo
@@ -16,10 +20,13 @@ from .models import MemoryInfo
 from .models import HddInfo
 from .models import Config
 from .models import DomainInfo
-from django.db.models import F
+from . import push_message
+from time import time
+from urllib.request import Request, urlopen
+from asgiref.sync import sync_to_async
 
-from django.core.cache import cache
-from django.db.models import Max
+
+
 from datetime import datetime
 from PIL import Image
 import json
@@ -27,11 +34,18 @@ import ipaddress
 import re
 import requests
 import telegram
+import asyncio
+import os
+
+# 비동기 환경에서 안전할수 없다는 경고는 비활성화 ( 비동기 텔레그램 에러메시지 발송 )
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 
 # 전역변수
 domain_cache_key         = settings.PROJECT_DOMAIN_CACHE_KEY
 domain_license_cache_key = settings.PROJECT_LICENSE_IMG_CACHE_KEY
 
+ERROR_522_MSG = "[SERVER] ACCESS TIME OUT"
+DATABASE_TIME_OUT_MSG =  " [DATABASE] 연결이 원할하지 않습니다. "
 # Create your views here.
 
 
@@ -47,6 +61,7 @@ domain_license_cache_key = settings.PROJECT_LICENSE_IMG_CACHE_KEY
 @login_required   #@permission_required 로 사용시 명시된 권한을 가진 사람만 접근가능
 def main(reqeust):
 
+    
     ## 메인 상단 카드 영역 -------------------------------------------------------------------------
 
     #프로젝트 수
@@ -448,28 +463,66 @@ def dataInsert(request):
     return HttpResponse(True)
 
 
+
+
+## host 를 하나씩 호출하면 순서가 밀려 
+## 1분 주기일때 프로젝트 개수 하나당 1분씩 밀림 
+## 멀티 프로세스로 개선이 필요
+## 개선 참조 : https://dojang.io/mod/page/view.php?id=2469
+## 시간별로 캐시결과 ... 
 @csrf_exempt
 @login_required()
 def get_client_status(request):
 
-    ## 클라이언트 서버 상태  ---------------------------------------------------------------------------
+    
+
+    ## 클라이언트 서버 / DB 상태  ---------------------------------------------------------------------------
     
     client_host = request.POST['client_host']
+    craw_url = request.POST['craw_url']
     result_code = False
     timeout = 5
-    time = 0 
-    state = "Not connected"
+    db_timeout = 5 # 디비 타임아웃 대기 시간
+    time  = 0
+    db_time = 0
+    state = "Not connected" 
+    db_state =  "Not connected"
 
     try:
-	    #time = requests.get( client_host , timeout=timeout)
+	    # 서버 상태 체크
         time = requests.get( client_host, timeout= timeout ).elapsed.total_seconds()
         state = "Active"
+
     except (requests.ConnectionError, requests.Timeout) as exception:
-        send_admin_alarm(client_host)
+        push_message.send_telegram_alarm(client_host , ERROR_522_MSG )
     except:
-        send_admin_alarm(client_host)
+        push_message.send_telegram_alarm(client_host , ERROR_522_MSG )
+
+    try:
+	    # 디비 서버 상태 체크
+        db_response = requests.get( craw_url  + '?db=Y', timeout= db_timeout )
+        db_time = db_response.elapsed.total_seconds()
+        db_state = db_response.status_code
+        #.elapsed.total_seconds()
+        #db_state = "Active"
+
+        if( db_response.text == 'Y' ):
+            # 응답 성공
+            db_state = "Active"
+        else:
+            # DB 응답없음
+            raise Exception()
+        
     
-    ## END 클라이언트 서버 상태  ---------------------------------------------------------------------------
+
+        
+    except (requests.ConnectionError, requests.Timeout) as exception:
+        push_message.send_telegram_alarm(client_host , DATABASE_TIME_OUT_MSG )
+    except:
+        push_message.send_telegram_alarm(client_host , DATABASE_TIME_OUT_MSG )
+
+
+    ## END 클라이언트 서버 / DB 상태  ---------------------------------------------------------------------------
 
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
@@ -477,7 +530,9 @@ def get_client_status(request):
     context = {
             'time' : int(time * 1000) ,
             'state' : state,
-            'date' : current_time
+            'date' : current_time,
+            'db_time' : int( db_time * 1000 ),
+            'db_state' : db_state
             }
     
     return HttpResponse(  json.dumps(context) , content_type="application/json")
@@ -567,16 +622,8 @@ def get_project(request):
 ######################################################
 # 관리자에게 메시지 발송 ( https://vmpo.tistory.com/85 ) 
 ######################################################            
-def send_admin_alarm(client_host):
-    
-    project_info = ProjectInfo.objects.get(pro_url=client_host)
+#@sync_to_async()
+def get_project_info(client_host):
+    return ProjectInfo.objects.get(pro_url=client_host)
 
-    message = project_info.pro_client_nm + '('  +  project_info.pro_url + ') 서버접속이 원할하지 않습니다. 확인이 필요합니다.' 
-
-    telgm_token = '1728694309:AAE6PDHdX5yhLn3CtavuT74SQ_m3BkUtrNs'
-    bot = telegram.Bot(token = telgm_token)
-
-    # 대화내용 가져오기 (chat_id )
-    #updates = bot.getUpdates()
-    bot.sendMessage(chat_id = '286351362', text=message )
 

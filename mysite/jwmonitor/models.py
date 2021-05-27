@@ -108,9 +108,18 @@ class DomainInfo( models.Model ):
     dl_create_dt = models.DateTimeField(default=timezone.now)
     
 
+#실시간 서버상태 정보
+class RealTimeInfo( models.Model ):
+    re_no = models.AutoField(primary_key=True)
+    re_server_time = models.IntegerField(default=0) 
+    re_server_status_code = models.CharField(max_length=12, null=False , blank=False )    
+    re_db_time = models.IntegerField(default=0)  
+    re_db_status_code = models.CharField(max_length=12, null=False , blank=False )    
+    re_pro_no = models.ForeignKey("ProjectInfo" , db_column="re_pro_no" , related_name="re_pro_no", on_delete=models.CASCADE , null=True )
+    re_create_dt = models.DateTimeField(default=timezone.now) 
+
 
 # 환경설정
-
 def random_string():
     return str(random.randint(10000, 99999))
 
@@ -123,3 +132,5 @@ class Config( models.Model ):
     con_desc = models.CharField(max_length=255 , null=True , blank=True)
     con_data = models.CharField(max_length=255 , null=False , blank=False , default='')
     con_update_dt = models.DateTimeField(default=timezone.now)
+
+

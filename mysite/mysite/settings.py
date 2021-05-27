@@ -26,7 +26,7 @@ SECRET_KEY = '1_re$xccw76xj9imb0&je_u4@f+zi_w0hh@qmcju9$w_=1yd9j'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','e11d35d09913.ngrok.io']
+ALLOWED_HOSTS = ['127.0.0.1','713eea6dc868.ngrok.io']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'background_task', # batch job 관련 라이브러리 ( background-tasks)
     'jwmonitor'
 ]
 

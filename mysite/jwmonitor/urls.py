@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+from . import tasks
+
 urlpatterns = [
     path('', views.main, name='dashboard'),
 
@@ -18,3 +20,6 @@ urlpatterns = [
     path('get_project' , views.get_project, name="get_project")  ,
     path('get_client_status' , views.get_client_status, name="get_client_status")  
 ]
+
+
+tasks.demo_task(repeat=60 , repeat_until=None)

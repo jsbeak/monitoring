@@ -27,4 +27,4 @@ body {font-family:"Spoqa Han Sans Neo", Rubik, Helvetica, Arial, serif !importan
 
 
 /* dashboard 서버정보 테이블 */
-table #server-db-table { min-height: 499px;}
+table.server-db-table { table-layout: auto;}

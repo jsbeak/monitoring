@@ -53,7 +53,8 @@
 
 <!-- BEGIN: Body-->
 
-<body class="horizontal-layout horizontal-menu navbar-static 2-columns   footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
+<!-- dark 레이아웃 적용시  body 클래스에 dark-layout 추가 -->
+<body class="horizontal-layout horizontal-menu navbar-static 2-columns   footer-static " data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
 
     <!-- BEGIN: Header-->
     <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-static-top bg-primary navbar-brand-center">
@@ -89,9 +90,9 @@
                         </ul>
                     </div>
                     <ul class="nav navbar-nav float-right d-flex align-items-center">
-                        <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-us"></i><span class="selected-language d-lg-inline d-none">English</span></a>
+                        <!-- <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-us"></i><span class="selected-language d-lg-inline d-none">English</span></a>
                             <div class="dropdown-menu" aria-labelledby="dropdown-flag"><a class="dropdown-item" href="javascript:void(0);" data-language="en"><i class="flag-icon flag-icon-us mr-50"></i>English</a><a class="dropdown-item" href="javascript:void(0);" data-language="fr"><i class="flag-icon flag-icon-fr mr-50"></i>French</a><a class="dropdown-item" href="javascript:void(0);" data-language="de"><i class="flag-icon flag-icon-de mr-50"></i>German</a><a class="dropdown-item" href="javascript:void(0);" data-language="pt"><i class="flag-icon flag-icon-pt mr-50"></i>Portuguese</a></div>
-                        </li>
+                        </li> -->
                         <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
                         <li class="nav-item nav-search"><a class="nav-link nav-link-search pt-2"><i class="ficon bx bx-search"></i></a>
                             <div class="search-input">
@@ -206,13 +207,14 @@
                                 <li class="dropdown-menu-footer"><a class="dropdown-item p-50 text-primary justify-content-center" href="javascript:void(0);">Read all notifications</a></li>
                             </ul>
                         </li>
+                        <!--                         
                         <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="javascript:void(0);" data-toggle="dropdown">
                                 <div class="user-nav d-lg-flex d-none"><span class="user-name">John Doe</span><span class="user-status">Available</span></div><span><img class="round" src="{% static 'app-assets/images/portrait/small/avatar-s-11.jpg' %}" alt="avatar" height="40" width="40"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right pb-0"><a class="dropdown-item" href="page-user-profile.html"><i class="bx bx-user mr-50"></i> Edit Profile</a><a class="dropdown-item" href="app-email.html"><i class="bx bx-envelope mr-50"></i> My Inbox</a><a class="dropdown-item" href="app-todo.html"><i class="bx bx-check-square mr-50"></i> Task</a><a class="dropdown-item" href="app-chat.html"><i class="bx bx-message mr-50"></i> Chats</a>
                                 <div class="dropdown-divider mb-0"></div><a class="dropdown-item" href="auth-login.html"><i class="bx bx-power-off mr-50"></i> Logout</a>
                             </div>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
             </div>
@@ -657,7 +659,7 @@
                                     <!-- <i class="bx bx-dots-vertical-rounded font-medium-3 align-middle cursor-pointer"></i> -->
                                 </div>
                                 <div class="table-responsive">
-                                  <table class="table mb-0 table-action" id="server-db-table">
+                                  <table class="table mb-0 table-action server-db-table" id="server-db-table">
                                     <thead class="thead-dark">
                                       <tr> 
                                         <th>CLIENT</th>
@@ -668,41 +670,8 @@
                                       </tr>
                                     </thead>
                                     <tbody >
-                                      <!-- <tr class="table-active" style="display: none;">
-                                        <td class="text-bold-500">연세대학교</td>
-                                        <td><a href="#">http://www.yonsei.ac.kr</a></td></td>
-                                        <td class="sorting_1"><i class="bx bxs-circle danger font-small-1 mr-50"></i><span>Expired</span></td>
-                                        <td class="sorting_1"><i class="bx bxs-circle success font-small-1 mr-50"></i><span>200ms</span></td>
-                                        <td>11.08.18</td>
-                                      </tr>
-                                      <tr style="display: none;">
-                                        <td class="text-bold-500">Yonsei</td>
-                                        <td><a href="#">http://www.yonsei.ac.kr</a></td></td>
-                                        <td class="sorting_1"><i class="bx bxs-circle danger font-small-1 mr-50"></i><span>Expired</span></td>
-                                        <td class="sorting_1"><i class="bx bxs-circle success font-small-1 mr-50"></i><span>200ms</span></td>
-                                        <td>11.08.18</td>
-                                      </tr>
-                                      <tr style="display: none;">
-                                        <td class="text-bold-500">Yonsei</td>
-                                        <td><a href="#">http://www.yonsei.ac.kr</a></td></td>
-                                        <td class="sorting_1"><i class="bx bxs-circle danger font-small-1 mr-50"></i><span>Expired</span></td>
-                                        <td class="sorting_1"><i class="bx bxs-circle success font-small-1 mr-50"></i><span>200ms</span></td>
-                                        <td>11.08.18</td>
-                                      </tr>
-                                      <tr style="display: none;">
-                                        <td class="text-bold-500">Yonsei</td>
-                                        <td><a href="#">http://www.yonsei.ac.kr</a></td></td>
-                                        <td class="sorting_1"><i class="bx bxs-circle danger font-small-1 mr-50"></i><span>Expired</span></td>
-                                        <td class="sorting_1"><i class="bx bxs-circle success font-small-1 mr-50"></i><span>200ms</span></td>
-                                        <td>11.08.18</td>
-                                      </tr>
-                                      <tr style="display: none;">
-                                        <td class="text-bold-500">Yonsei</td>
-                                        <td><a href="#">http://www.yonsei.ac.kr</a></td></td>
-                                        <td class="sorting_1"><i class="bx bxs-circle danger font-small-1 mr-50"></i><span>Expired</span></td>
-                                        <td class="sorting_1"><i class="bx bxs-circle success font-small-1 mr-50"></i><span>200ms</span></td>
-                                        <td>11.08.18</td>
-                                      </tr> -->
+                                       
+                                      
                                       
                                     </tbody>
                                   </table>

@@ -1,5 +1,5 @@
 
-var intervalTime = 10000;
+var intervalTime = 5000;
 var project_list = []; 
 var intervalCnt = 0; 
 
@@ -92,15 +92,27 @@ function updateServerStatus(project){
     type : "POST",
     url: "/get_client_status", 
     dataType: "json",
-    data  : { 'client_host' : project.fields.pro_url },
+    data  : { 
+      'client_host' : project.fields.pro_url, 
+      'craw_url' : project.fields.pro_craw_url
+    },
     async: false,
     success: function(response){ 
       
       var stateClass = "success";
-      var stateText = "Active";
+      var stateClassDb = "success";
+      var stateText =  "Active";
+      var stateTextDb =  "Active";
+      // 서버 상태 
       if( response.time == 0 ){
         stateClass = "danger";
         stateText = "Expired";
+      }
+
+      // 디비 상태 
+      if( response.db_time == 0 ){
+        stateClassDb = "danger";
+        stateTextDb = "Expired";
       }
 
       var html ='' ;
@@ -109,17 +121,17 @@ function updateServerStatus(project){
       html += '<td class="text-bold-500">' + project.fields.pro_client_nm + '</td>';
       html += '<td><a href="' + project.fields.pro_url +'" target="_blank">'+ project.fields.pro_url + '</a></td></td>';
       html += '<td class="sorting_1"><i class="bx bxs-circle ' + stateClass +' font-small-1 mr-50"></i><span>' + stateText +'/'  + response.time + 'ms</span></td>';
-      html += '<td class="sorting_1"><i class="bx bxs-circle ' + stateClass +' font-small-1 mr-50"></i><span> - </span></td>';
+      html += '<td class="sorting_1"><i class="bx bxs-circle ' + stateClassDb +' font-small-1 mr-50"></i><span>' + stateTextDb +'/' + response.db_time  + 'ms</span></td>';
       html += '<td>' + response.date + '</td>';
       html += '</tr>';
 
       
-      var curCnt = $("#server-db-table tbody tr").not(".table-active").length;
-
+      //var curCnt = $("#server-db-table tbody tr").not(".table-active").length;
+      var curCnt = $("#server-db-table tbody tr").length;
       // 최대개수 노출시 마지막값을 삭제
-      if( curCnt == SERVER_DB_CNT ){
+      if( curCnt >= SERVER_DB_CNT ){
         //$("#server-db-table tbody tr").not(".table-active").last().remove();
-        $("#server-db-table tbody tr").last().fadeOut(300 , function(){
+        $("#server-db-table tbody tr").last().fadeOut(480 , function(){
           $(this).remove();
         })
       }
@@ -135,7 +147,7 @@ function updateServerStatus(project){
         $("#server-db-table tbody tr:hidden").delay(500).show(1200);  
         
       }
-
+      
     }
   });
 }
