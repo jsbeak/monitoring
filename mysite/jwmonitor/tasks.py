@@ -37,8 +37,8 @@ def demo_task():
         realtimeInfo.re_pro_no = project
 
         try:
-            # 서버 상태 체크
-            response = requests.get( project.pro_craw_url  + "?jini-s=Y" , timeout= timeout )
+            # 서버 상태 체크 -> index 페이지 응답 속도 
+            response = requests.get( project.pro_url  + "?jini-s=Y" , timeout= timeout )
             realtimeInfo.re_server_time = int( response.elapsed.total_seconds()  * 1000 )
             realtimeInfo.re_server_status_code = response.status_code
             #result_data['server_time'] = response.elapsed.total_seconds()

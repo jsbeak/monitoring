@@ -57,7 +57,7 @@ var SERVER_DB_CNT = 6;
   getProject();
 
   // 서버 상태 및 디비 체크 interval 시작
-  initClientCheckInterval();
+  // initClientCheckInterval();
   
 
 })(window);
